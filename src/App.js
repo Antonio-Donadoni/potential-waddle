@@ -7,38 +7,12 @@ import { setAppuntamenti } from "./store";
 import NewAppointmentSection from "./components/NewAppointmentSection";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Search } from "lucide-react";
+import { FilterIcon, PlusCircle, Search } from "lucide-react";
 import Navbar from "./components/Navbar";
 import CurrentWeekDays from "./components/CurrentWeekDays";
 import moment from "moment";
-
-const defaultAppuntamenti = [
-  {
-    id: 1,
-    data: "2023/06/11 10:00",
-    titolo: "Presentazione progetto finale ",
-    descrizione:
-      "Presentazione progetto finale per corso React JS presso Web Agency SRL",
-    completato: true,
-    tipo: "Lavoro",
-  },
-  {
-    id: 2,
-    data: "2023/06/10 14:00",
-    titolo: "Visita medica",
-    descrizione: "Sede: Ospedale San Raffaele - Milano - Piano 2",
-    completato: false,
-    tipo: "Salute",
-  },
-  {
-    id: 3,
-    data: "2023/06/10 16:00",
-    titolo: "Appuntamento con avvocato",
-    descrizione: "Consulenza legale presso studio avvocato",
-    completato: false,
-    tipo: "Lavoro",
-  },
-];
+import defaultAppuntamenti from "./defaultAppuntamenti";
+import FilterSection from "./components/FilterSection";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -48,6 +22,15 @@ const App = () => {
   const [isNewAppointmentSectionOpen, setIsNewAppointmentSectionOpen] =
     useState(false);
   const [selectedDay, setSelectedDay] = useState(moment());
+  const [filterSectionOpen, setFilterSectionOpen] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
+    svago: true,
+    lavoro: true,
+    salute: true,
+    completato: true,
+    nonCompletato: true,
+  });
+  console.log("appuntamenti", appuntamenti[0]?.completato);
 
   useEffect(() => {
     const storedAppuntamenti = localStorage.getItem("appuntamenti");
@@ -85,65 +68,112 @@ const App = () => {
           )}
 
           <div className="flex flex-col md:flex-row justify-between items-center mb-6 border-b-2 border-blue-800 pb-2">
-            <h1
-              className="text-3xl font-bold text-blue-800  
+            <div className="flex flex-row items-center ">
+              <h1
+                className="text-3xl font-bold text-blue-800  
           "
-            >
-              I miei appuntamenti
-            </h1>
-            <div className="flex flex-row items-center">
+              >
+                I miei appuntamenti
+              </h1>
               <button
-                className="bg-blue-800 text-white px-4 py-2 rounded-lg mr-2"
+                className=" ml-4 flex flex-row items-center text-blue-800 font-semibold"
                 onClick={() =>
                   setIsNewAppointmentSectionOpen(!isNewAppointmentSectionOpen)
                 }
               >
+                <PlusCircle className="mr-2" size={24} />
                 {"Nuovo appuntamento"}
               </button>
+            </div>
+            <div className="flex flex-row items-center">
               <Search className="mr-2" size={24} />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Cerca appuntamento"
-                className="px-4 py-2 border border-gray-300 rounded-lg "
+                placeholder="Cerca"
+                className="px-4 py-2 border border-gray-300 rounded-lg mr-2 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent"
               />
+              <button
+                className={`mr-2 flex items-center text-gray-600 font-semibold ${
+                  filterSectionOpen ? "text-blue-800" : ""
+                }`}
+                onClick={() => setFilterSectionOpen(!filterSectionOpen)}
+              >
+                <FilterIcon className="mr-1" size={24} />
+                Filtra
+              </button>
             </div>
           </div>
-          <CurrentWeekDays
-            selectedDay={selectedDay}
-            setSelectedDay={setSelectedDay}
-          />
+          {!!filterSectionOpen && (
+            <FilterSection
+              filterOptions={filterOptions}
+              setFilterOptions={setFilterOptions}
+            />
+          )}
+          {!searchTerm && (
+            <CurrentWeekDays
+              selectedDay={selectedDay}
+              setSelectedDay={setSelectedDay}
+            />
+          )}
 
-          {appuntamenti
-            .filter((appuntamento) => {
-              if (searchTerm === "") {
-                return moment(appuntamento.data, "YYYY/MM/DD HH:mm").isSame(
-                  selectedDay,
-                  "day"
-                );
-              } else if (
-                appuntamento.descrizione
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase()) ||
-                appuntamento.titolo
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
-              ) {
-                return appuntamento;
-              }
-            })
-            .map((appuntamento) => (
-              <AppointmentCard
-                id={appuntamento.id}
-                key={appuntamento.id}
-                data={appuntamento.data}
-                titolo={appuntamento.titolo}
-                descrizione={appuntamento.descrizione}
-                completato={appuntamento.completato}
-                tipo={appuntamento.tipo}
-              />
-            ))}
+          {appuntamenti?.length > 0 &&
+            appuntamenti
+              .filter((appuntamento) => {
+                const isSameDay = moment(
+                  appuntamento.data,
+                  "YYYY/MM/DD HH:mm"
+                ).isSame(selectedDay, "day");
+
+                const containsSearchTerm =
+                  appuntamento.descrizione
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                  appuntamento.titolo
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+
+                const isTipoMatched =
+                  (filterOptions.svago && appuntamento.tipo === "Svago") ||
+                  (filterOptions.lavoro && appuntamento.tipo === "Lavoro") ||
+                  (filterOptions.salute && appuntamento.tipo === "Salute");
+
+                const isCompletatoMatched =
+                  (filterOptions.completato && appuntamento.completato) ||
+                  (filterOptions.nonCompletato && !appuntamento.completato);
+
+                if (searchTerm === "") {
+                  return (
+                    isTipoMatched &&
+                    (isCompletatoMatched ||
+                      (filterOptions.completato &&
+                        filterOptions.nonCompletato)) &&
+                    isSameDay
+                  );
+                } else {
+                  return (
+                    containsSearchTerm &&
+                    isTipoMatched &&
+                    (isCompletatoMatched ||
+                      (filterOptions.completato && filterOptions.nonCompletato))
+                    //      &&
+                    // isSameDay
+                  );
+                }
+              })
+
+              .map((appuntamento) => (
+                <AppointmentCard
+                  id={appuntamento.id}
+                  key={appuntamento.id}
+                  data={appuntamento.data}
+                  titolo={appuntamento.titolo}
+                  descrizione={appuntamento.descrizione}
+                  completato={appuntamento?.completato}
+                  tipo={appuntamento.tipo}
+                />
+              ))}
         </div>
       </div>
     </div>

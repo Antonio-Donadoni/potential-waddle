@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "data": "2023/06/11 10:00",
+    "titolo": "Presentazione progetto finale ",
+    "descrizione": "Presentazione progetto finale per corso React JS presso Web Agency SRL",
+    "completato": true,
+    "tipo": "Lavoro"
+  },
+  {
+    "id": 2,
+    "data": "2023/06/10 14:00",
+    "titolo": "Visita medica",
+    "descrizione": "Sede: Ospedale San Raffaele - Milano - Piano 2",
+    "completato": false,
+    "tipo": "Salute"
+  },
+  {
+    "id": 3,
+    "data": "2023/06/10 16:00",
+    "titolo": "Appuntamento con avvocato",
+    "descrizione": "Consulenza legale presso studio avvocato",
+    "completato": false,
+    "tipo": "Lavoro"
+  },
+  {
+    "id": 4,
+    "data": "2023/06/12 16:00",
+    "titolo": "Appuntamento lavoro",
+    "descrizione": "Colloquio di lavoro presso azienda XYZ",
+    "completato": false,
+    "tipo": "Lavoro"
+  },
+  {
+    "id": 5,
+    "data": "2023/06/12 21:00",
+    "titolo": "Partita di calcetto",
+    "descrizione": "Partita di calcetto con amici",
+    "completato": false,
+    "tipo": "Svago"
+  },
+  {
+    "id": 6,
+    "data": "2023/06/12 11:00",
+    "titolo": "Appuntamento con avvocato",
+    "descrizione": "Consulenza legale presso studio avvocato",
+    "completato": false,
+    "tipo": "Lavoro"
+  }
+]
