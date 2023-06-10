@@ -34,7 +34,7 @@ const CurrentWeekDays = ({ selectedDay, setSelectedDay }) => {
     <div className="w-full flex justify-center">
       <div
         className="flex
-     items-center mb-6 w-full md:w-2/3"
+     items-center mb-6 w-full md:w-2/3 lg:w-1/2 "
       >
         <ChevronLeft
           onClick={previousWeek}
@@ -75,7 +75,7 @@ const DayCard = ({ day, selectedDay, setSelectedDay }) => {
   return (
     <div
       key={`${day.day}-${day.month}`}
-      className={`mr-1 md:mr-2  font-bold text-center rounded-full md:rounded-lg px-1 py-2 md:px-2 md:py-4 transition duration-300 ease-in-out hover:shadow-lg cursor-pointer relative ${
+      className={`mr-1 md:mr-2  font-bold text-center rounded-full md:rounded-lg px-1 py-2 md:px-2 md:pb-4 transition duration-300 ease-in-out hover:shadow-lg cursor-pointer relative ${
         isSelected
           ? "bg-blue-800 text-white"
           : dayHasAppuntamenti

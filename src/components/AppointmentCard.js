@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Check, X, Trash2 } from "lucide-react";
 import moment from "moment";
 import "moment/locale/it"; // Importa la localizzazione italiana
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAppuntamento, toggleCompletato } from "../store";
 import { toast } from "react-toastify";
+import DeletePopup from "./DeletePopup";
 
 const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
   moment.locale("it"); // Imposta la localizzazione italiana
   const dispatch = useDispatch();
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const completato = useSelector(
     (state) =>
@@ -26,7 +28,6 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
   };
 
   // colori diversi per le tipologie
-
   const getColorClass = () => {
     switch (tipo) {
       case "Lavoro":
@@ -82,6 +83,12 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
         completato ? getColorClass().borderChecked : getColorClass().border
       } `}
     >
+      {!!showDeletePopup && (
+        <DeletePopup
+          setShowDeletePopup={setShowDeletePopup}
+          handleDelete={handleDelete}
+        />
+      )}
       <div
         className={`border-b-2 md:border-b-0
        md:border-r-2 ${
@@ -177,7 +184,7 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
           <Trash2
             strokeWidth={3}
             className="text-blue-800 cursor-pointer"
-            onClick={handleDelete}
+            onClick={() => setShowDeletePopup(true)}
           />
         </div>
       </div>
