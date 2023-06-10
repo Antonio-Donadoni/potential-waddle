@@ -9,31 +9,34 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Search } from "lucide-react";
 import Navbar from "./components/Navbar";
+import CurrentWeekDays from "./components/CurrentWeekDays";
+import moment from "moment";
 
 const defaultAppuntamenti = [
   {
     id: 1,
-    data: "06/02/2023",
-    oraInizio: "10:00",
-    oraFine: "11:30",
-    descrizione: "Appuntamento 1",
+    data: "2023/06/11 10:00",
+    titolo: "Presentazione progetto finale ",
+    descrizione:
+      "Presentazione progetto finale per corso React JS presso Web Agency SRL",
     completato: true,
+    tipo: "Lavoro",
   },
   {
     id: 2,
-    data: "06/02/2023",
-    oraInizio: "14:30",
-    oraFine: "15:30",
-    descrizione: "Appuntamento 2",
+    data: "2023/06/10 14:00",
+    titolo: "Visita medica",
+    descrizione: "Sede: Ospedale San Raffaele - Milano - Piano 2",
     completato: false,
+    tipo: "Salute",
   },
   {
     id: 3,
-    data: "06/04/2023",
-    oraInizio: "09:00",
-    oraFine: "10:00",
-    descrizione: "Appuntamento 3",
+    data: "2023/06/10 16:00",
+    titolo: "Appuntamento con avvocato",
+    descrizione: "Consulenza legale presso studio avvocato",
     completato: false,
+    tipo: "Lavoro",
   },
 ];
 
@@ -42,6 +45,9 @@ const App = () => {
   const appuntamenti = useSelector((state) => state.appuntamenti);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [isNewAppointmentSectionOpen, setIsNewAppointmentSectionOpen] =
+    useState(false);
+  const [selectedDay, setSelectedDay] = useState(moment());
 
   useEffect(() => {
     const storedAppuntamenti = localStorage.getItem("appuntamenti");
@@ -49,7 +55,6 @@ const App = () => {
       const parsedAppuntamenti = JSON.parse(storedAppuntamenti);
       dispatch(setAppuntamenti(parsedAppuntamenti));
     } else {
-      console.log("No appuntamenti found in local storage");
       const parsedDefaultAppuntamenti = JSON.parse(
         JSON.stringify(defaultAppuntamenti)
       );
@@ -72,7 +77,12 @@ const App = () => {
       >
         <ToastContainer />
         <div className="container mx-auto">
-          <NewAppointmentSection appuntamenti={appuntamenti} />
+          {!!isNewAppointmentSectionOpen && (
+            <NewAppointmentSection
+              appuntamenti={appuntamenti}
+              onClose={() => setIsNewAppointmentSectionOpen(false)}
+            />
+          )}
 
           <div className="flex flex-col md:flex-row justify-between items-center mb-6 border-b-2 border-blue-800 pb-2">
             <h1
@@ -82,6 +92,14 @@ const App = () => {
               I miei appuntamenti
             </h1>
             <div className="flex flex-row items-center">
+              <button
+                className="bg-blue-800 text-white px-4 py-2 rounded-lg mr-2"
+                onClick={() =>
+                  setIsNewAppointmentSectionOpen(!isNewAppointmentSectionOpen)
+                }
+              >
+                {"Nuovo appuntamento"}
+              </button>
               <Search className="mr-2" size={24} />
               <input
                 type="text"
@@ -92,12 +110,23 @@ const App = () => {
               />
             </div>
           </div>
+          <CurrentWeekDays
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+          />
+
           {appuntamenti
             .filter((appuntamento) => {
               if (searchTerm === "") {
-                return appuntamento;
+                return moment(appuntamento.data, "YYYY/MM/DD HH:mm").isSame(
+                  selectedDay,
+                  "day"
+                );
               } else if (
                 appuntamento.descrizione
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                appuntamento.titolo
                   .toLowerCase()
                   .includes(searchTerm.toLowerCase())
               ) {
@@ -109,10 +138,10 @@ const App = () => {
                 id={appuntamento.id}
                 key={appuntamento.id}
                 data={appuntamento.data}
-                oraInizio={appuntamento.oraInizio}
-                oraFine={appuntamento.oraFine}
+                titolo={appuntamento.titolo}
                 descrizione={appuntamento.descrizione}
                 completato={appuntamento.completato}
+                tipo={appuntamento.tipo}
               />
             ))}
         </div>

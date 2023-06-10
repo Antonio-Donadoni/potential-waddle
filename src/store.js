@@ -7,7 +7,6 @@ const appuntamentiSlice = createSlice({
   initialState: [],
   reducers: {
     setAppuntamenti: (state, action) => {
-      console.log("seertt", action.payload);
       return action.payload;
     },
     addAppuntamento: (state, action) => {

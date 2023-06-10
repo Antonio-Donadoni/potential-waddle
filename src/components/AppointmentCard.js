@@ -1,12 +1,12 @@
 import React from "react";
-import { Check, X } from "lucide-react";
+import { Check, X, Trash2 } from "lucide-react";
 import moment from "moment";
 import "moment/locale/it"; // Importa la localizzazione italiana
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAppuntamento, toggleCompletato } from "../store";
 import { toast } from "react-toastify";
 
-const AppointmentCard = ({ id, data, oraInizio, oraFine, descrizione }) => {
+const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
   moment.locale("it"); // Imposta la localizzazione italiana
   const dispatch = useDispatch();
 
@@ -25,17 +25,72 @@ const AppointmentCard = ({ id, data, oraInizio, oraFine, descrizione }) => {
     dispatch(toggleCompletato(id));
   };
 
+  // colori diversi per le tipologie
+
+  const getColorClass = () => {
+    switch (tipo) {
+      case "Lavoro":
+        return {
+          bg: "bg-orange-200",
+          text: "text-orange-600",
+          lighText: "text-orange-400",
+          border: "border-orange-200",
+          borderChecked: "border-orange-600",
+          unchecked: "bg-orange-200 border-orange-400",
+          checked: "bg-orange-400 border-orange-600",
+        };
+      case "Salute":
+        return {
+          bg: "bg-green-200",
+          text: "text-green-600",
+          lighText: "text-green-400",
+          border: "border-green-200",
+          borderChecked: "border-green-600",
+          unchecked: "bg-green-200 border-green-400",
+          checked: "bg-green-400 border-green-600",
+        };
+
+      case "Svago":
+        return {
+          bg: "bg-purple-200",
+          text: "text-purple-800",
+          lighText: "text-purple-400",
+          border: "border-purple-200",
+          borderChecked: "border-purple-600",
+          unchecked: "bg-purple-200 border-purple-400",
+          checked: "bg-purple-400 border-purple-600",
+        };
+      default: {
+        return {
+          bg: "bg-gray-200",
+          text: "text-gray-800",
+          lighText: "text-gray-400",
+          border: "border-gray-200",
+          borderChecked: "border-gray-600",
+          unchecked: "bg-gray-200 border-gray-400",
+          checked: "bg-gray-400 border-gray-600",
+        };
+      }
+    }
+  };
+
   return (
     <div
-      className="rounded-lg shadow-md p-4 mb-6 flex flex-col md:flex-row justify-between  relative bg-white transition duration-300 ease-in-out hover:shadow-lg
-    "
+      className={`rounded-lg shadow-md p-4 mb-6 flex flex-col md:flex-row justify-between  relative bg-white transition duration-300 ease-in-out hover:shadow-xl border-l-4 ${
+        completato ? getColorClass().bg : "bg-white"
+      } ${
+        completato ? getColorClass().borderChecked : getColorClass().border
+      } `}
     >
       <div
-        className="border-b-2 md:border-b-0
-       md:border-r-2 border-gray-200 pr-2 md:pr-6 pb-4 md:pb-0 flex flex-row md:flex-col justify-between"
+        className={`border-b-2 md:border-b-0
+       md:border-r-2 ${
+         completato ? getColorClass().borderChecked : getColorClass().border
+       } 
+        pr-2 md:pr-4 pb-4 md:pb-0 flex flex-row md:flex-col justify-between`}
       >
         <div className="flex md:flex-row ">
-          <h3 className="text-3xl font-semibold mr-1 text-blue-800">
+          <h3 className={`text-3xl font-semibold mr-1 ${getColorClass().text}`}>
             {moment(data).format("DD")}
           </h3>
           <div
@@ -58,19 +113,27 @@ const AppointmentCard = ({ id, data, oraInizio, oraFine, descrizione }) => {
             </p>
           </div>
         </div>
-        <p
-          className="text-sm text-gray-600 font-semibold mt-1 leading-none text-blue-500 
-        "
-        >
-          {oraInizio} - {oraFine}
-        </p>
+        <div>
+          <p
+            className={`font-semibold leading-none text-md text-gray-600 
+          }
+        `}
+          >
+            {"Ore " + moment(data).format("HH:mm")}
+          </p>
+          <p
+            className={`font-semibold leading-none uppercase p-1 rounded-lg
+           ${getColorClass().bg} text-sm ${
+              getColorClass().text
+            } text-center md:mt-2
+        `}
+          >
+            {tipo}
+          </p>
+        </div>
       </div>
       <div className=" w-full ml-0 md:ml-6 pt-4 md:pt-0">
-        <p
-          className={`text-gray-800 ${
-            completato ? "line-through" : ""
-          } text-lg`}
-        >
+        <p className={`text-lg`}>
           <div className="flex flex-row items-center">
             <div
               className="w-5 h-5 flex justify-center items-center rounded-full bg-red-100 cursor-pointer hover:bg-red-200 transition duration-300 ease-in-out mr-2"
@@ -80,8 +143,8 @@ const AppointmentCard = ({ id, data, oraInizio, oraFine, descrizione }) => {
                 className={`block rounded-full w-5 h-5 flex items-center justify-center
                  ${
                    completato
-                     ? "bg-green-600 border-2 border-green-600"
-                     : "bg-gray-200 border-2 border-blue-400"
+                     ? `border-2 ${getColorClass().checked}`
+                     : ` border-2 ${getColorClass().unchecked}`
                  }`}
               >
                 {completato ? (
@@ -89,16 +152,31 @@ const AppointmentCard = ({ id, data, oraInizio, oraFine, descrizione }) => {
                 ) : null}
               </span>
             </div>
-            <span className="font-semibold text-gray-800 ">{descrizione}</span>
+            <span
+              className={`font-semibold text-gray-800 ${
+                completato ? " text-gray-500" : "text-gray-800"
+              } `}
+            >
+              {titolo}
+            </span>
+          </div>
+          <div className="mt-1">
+            <p
+              className={`text-gray-600 text-sm ${
+                completato ? " text-gray-500" : "text-gray-800"
+              }`}
+            >
+              {descrizione}
+            </p>
           </div>
         </p>
       </div>
       <div></div>
-      <div className="flex items-center absolute right-2 top-2 ">
-        <div className="w-4 h-4 flex justify-center items-center rounded-full bg-red-100 cursor-pointer hover:bg-red-200 transition duration-300 ease-in-out ml-2">
-          <X
+      <div className="flex items-center absolute md:right-2 md:top-2  right-1 top-1 ">
+        <div className="w-4 h-4 flex justify-center items-center cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out ">
+          <Trash2
             strokeWidth={3}
-            className="text-red-500 cursor-pointer"
+            className="text-blue-800 cursor-pointer"
             onClick={handleDelete}
           />
         </div>
