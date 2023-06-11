@@ -9,8 +9,8 @@ const FilterSection = ({ filterOptions, setFilterOptions }) => {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between">
-      <div className="flex flex-row items-center justify-between">
+    <div className="flex flex-col md:flex-row items-center justify-between">
+      <div className="flex flex-row items-center justify-between mb-2 md:mb-0">
         <h2 className="text-lg font-semibold text-blue-800 ">
           Filtra per tipo:
         </h2>
@@ -45,7 +45,7 @@ const FilterSection = ({ filterOptions, setFilterOptions }) => {
           <span className="text-gray-700">Salute</span>
         </label>
       </div>
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-row items-center justify-between mb-2 md:mb-0">
         <h2 className="text-lg font-semibold text-blue-800">Stato:</h2>
         <label className="flex items-center ml-2">
           <input

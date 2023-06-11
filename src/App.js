@@ -68,9 +68,9 @@ const App = () => {
           )}
 
           <div className="flex flex-col md:flex-row justify-between items-center mb-6 border-b-2 border-blue-800 pb-2">
-            <div className="flex flex-row items-center ">
+            <div className="flex flex-row md:items-center w-full">
               <h1
-                className="text-3xl font-bold text-blue-800  
+                className="text-xl md:text-3xl font-bold text-blue-800  
           "
               >
                 I miei appuntamenti
@@ -85,15 +85,17 @@ const App = () => {
                 {"Nuovo appuntamento"}
               </button>
             </div>
-            <div className="flex flex-row items-center">
-              <Search className="mr-2" size={24} />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Cerca"
-                className="px-4 py-2 border border-gray-300 rounded-lg mr-2 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent"
-              />
+            <div className="flex flex-row items-center justify-between md:justify-end w-full mt-2 md:mt-0">
+              <div className="flex flex-row items-center ">
+                <Search className="mr-2" size={24} />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Cerca"
+                  className="px-4 py-2 border border-gray-300 rounded-lg mr-2 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent"
+                />
+              </div>
               <button
                 className={`mr-2 flex items-center text-gray-600 font-semibold ${
                   filterSectionOpen ? "text-blue-800" : ""

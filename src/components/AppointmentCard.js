@@ -77,7 +77,7 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
 
   return (
     <div
-      className={`rounded-lg shadow-md p-4 mb-6 flex flex-col md:flex-row justify-between  relative bg-white transition duration-300 ease-in-out hover:shadow-xl border-l-4 ${
+      className={`rounded-lg shadow-md p-4 mb-6 flex flex-col md:flex-row justify-between  relative  transition duration-300 ease-in-out hover:shadow-xl border-l-4 ${
         completato ? getColorClass().bg : "bg-white"
       } ${
         completato ? getColorClass().borderChecked : getColorClass().border
@@ -160,7 +160,7 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
               </span>
             </div>
             <span
-              className={`font-semibold text-gray-800 ${
+              className={`font-semibold  ${
                 completato ? " text-gray-500" : "text-gray-800"
               } `}
             >
@@ -169,7 +169,7 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
           </div>
           <div className="mt-1">
             <p
-              className={`text-gray-600 text-sm ${
+              className={` text-sm ${
                 completato ? " text-gray-500" : "text-gray-800"
               }`}
             >
