@@ -1,7 +1,6 @@
 const FilterSection = ({ filterOptions, setFilterOptions }) => {
   const handleFilterChange = (event) => {
     const { value, checked } = event.target;
-    console.log(value, checked);
     setFilterOptions((prevOptions) => ({
       ...prevOptions,
       [value]: checked,

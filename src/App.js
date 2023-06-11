@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AppointmentCard from "./components/AppointmentCard";
 import { useDispatch, useSelector } from "react-redux";
 import { setAppuntamenti } from "./store";
@@ -30,7 +30,34 @@ const App = () => {
     completato: true,
     nonCompletato: true,
   });
-  console.log("appuntamenti", appuntamenti[0]?.completato);
+
+  const appuntamentiOggi = useMemo(
+    () =>
+      appuntamenti.filter((appuntamento) =>
+        moment(appuntamento.data).isSame(selectedDay, "day")
+      ).length,
+    [appuntamenti, selectedDay]
+  );
+
+  const appuntamentiOggiCompletati = useMemo(
+    () =>
+      appuntamenti.filter(
+        (appuntamento) =>
+          moment(appuntamento.data).isSame(selectedDay, "day") &&
+          appuntamento.completato
+      ).length,
+    [appuntamenti, selectedDay]
+  );
+
+  const appuntamentiOggiNonCompletati = useMemo(
+    () =>
+      appuntamenti.filter(
+        (appuntamento) =>
+          moment(appuntamento.data).isSame(selectedDay, "day") &&
+          !appuntamento.completato
+      ).length,
+    [appuntamenti, selectedDay]
+  );
 
   useEffect(() => {
     const storedAppuntamenti = localStorage.getItem("appuntamenti");
@@ -127,6 +154,20 @@ const App = () => {
               setSelectedDay={setSelectedDay}
             />
           )}
+
+          <p
+            className="text-gray-600 text-sm 
+          "
+          >
+            Hai {appuntamentiOggi} appuntamenti fissati per questo giornata
+          </p>
+          <p
+            className="text-gray-600 text-sm mb-4
+          "
+          >
+            ({appuntamentiOggiCompletati} completati{" / "}
+            {appuntamentiOggiNonCompletati} da completare)
+          </p>
 
           {appuntamenti?.length > 0 &&
             appuntamenti
