@@ -7,7 +7,7 @@ import { setAppuntamenti } from "./store";
 import NewAppointmentSection from "./components/NewAppointmentSection";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FilterIcon, PlusCircle, Search } from "lucide-react";
+import { FilterIcon, FilterXIcon, PlusCircle, Search } from "lucide-react";
 import Navbar from "./components/Navbar";
 import CurrentWeekDays from "./components/CurrentWeekDays";
 import moment from "moment";
@@ -67,7 +67,11 @@ const App = () => {
             />
           )}
 
-          <div className="flex flex-col md:flex-row justify-between items-center mb-6 border-b-2 border-blue-800 pb-2">
+          <div
+            className={`flex flex-col md:flex-row justify-between items-center mb-6 ${
+              filterSectionOpen ? "border-b-0" : "border-b-2  pb-2"
+            } border-blue-800`}
+          >
             <div className="flex flex-row md:items-center w-full">
               <h1
                 className="text-xl md:text-3xl font-bold text-blue-800  
@@ -102,7 +106,11 @@ const App = () => {
                 }`}
                 onClick={() => setFilterSectionOpen(!filterSectionOpen)}
               >
-                <FilterIcon className="mr-1" size={24} />
+                {filterSectionOpen ? (
+                  <FilterXIcon className="mr-1" size={24} color="#1d4ed8" />
+                ) : (
+                  <FilterIcon className="mr-1" size={24} />
+                )}
                 Filtra
               </button>
             </div>
