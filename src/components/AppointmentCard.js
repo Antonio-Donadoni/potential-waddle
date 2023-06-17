@@ -3,9 +3,13 @@ import { Check, X, Trash2 } from "lucide-react";
 import moment from "moment";
 import "moment/locale/it"; // Importa la localizzazione italiana
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAppuntamento, toggleCompletato } from "../store";
+
 import { toast } from "react-toastify";
 import DeletePopup from "./DeletePopup";
+import {
+  deleteAppointment,
+  updateAppointment,
+} from "../features/appointmentsSlice";
 
 const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
   moment.locale("it"); // Imposta la localizzazione italiana
@@ -14,17 +18,26 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
 
   const completato = useSelector(
     (state) =>
-      state.appuntamenti.find((appuntamento) => appuntamento.id === id)
+      state.appuntamenti?.data.find((appuntamento) => appuntamento._id === id)
         ?.completato
   );
 
+  console.log("completato", completato);
+
   const handleDelete = () => {
-    dispatch(deleteAppuntamento(id));
+    dispatch(deleteAppointment(id));
     toast.success("Appuntamento eliminato!");
   };
 
   const handleCompletatoToggle = () => {
-    dispatch(toggleCompletato(id));
+    dispatch(
+      updateAppointment({
+        id,
+        updateData: {
+          completato: !completato,
+        },
+      })
+    );
   };
 
   // colori diversi per le tipologie

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -65,12 +65,26 @@ const CurrentWeekDays = ({ selectedDay, setSelectedDay }) => {
 export default CurrentWeekDays;
 
 const DayCard = ({ day, selectedDay, setSelectedDay }) => {
-  const appuntamenti = useSelector((state) => state.appuntamenti);
+  const appuntamenti = useSelector((state) => state.appuntamenti.data);
   const isSelected = day.fullDate === moment(selectedDay).format("YYYY-MM-DD");
+  const [dayHasAppuntamenti, setDayHasAppuntamenti] = useState(false);
 
-  const dayHasAppuntamenti = appuntamenti.some((appuntamento) =>
-    moment(appuntamento.data, "YYYY/MM/DD HH:mm").isSame(day.fullDate, "day")
-  );
+  useEffect(() => {
+    if (appuntamenti?.length > 0) {
+      console.log("MA QUA", appuntamenti);
+      const dayHasAppuntamenti = appuntamenti?.some((appuntamento) =>
+        moment(appuntamento.data, "YYYY/MM/DD HH:mm").isSame(
+          day.fullDate,
+          "day"
+        )
+      );
+      if (!!dayHasAppuntamenti) {
+        setDayHasAppuntamenti(true);
+      } else {
+        setDayHasAppuntamenti(false);
+      }
+    }
+  }, [appuntamenti]);
 
   return (
     <div

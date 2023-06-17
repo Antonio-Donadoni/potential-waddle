@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { addAppuntamento } from "../store";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { X } from "lucide-react";
+import { createNewAppointment } from "../features/appointmentsSlice";
 
 const inputArray = [
   {
@@ -32,9 +32,9 @@ const NewAppointmentSection = ({ appuntamenti, onClose }) => {
   const dispatch = useDispatch();
   const [nuovoAppuntamento, setNuovoAppuntamento] = useState({
     data: "",
-    oraInizio: "",
-    oraFine: "",
+    titolo: "",
     descrizione: "",
+    tipo: "",
   });
 
   const handleChangeNuovoAppuntamento = (e) => {
@@ -54,15 +54,15 @@ const NewAppointmentSection = ({ appuntamenti, onClose }) => {
       completato: false,
     };
 
-    dispatch(addAppuntamento(nuovoAppuntamentoFormatted));
+    dispatch(createNewAppointment(nuovoAppuntamentoFormatted));
     toast.success("Appuntamento aggiunto con successo!");
     onClose();
 
     setNuovoAppuntamento({
       data: "",
-      oraInizio: "",
-      oraFine: "",
+      titolo: "",
       descrizione: "",
+      tipo: "",
     });
   };
 

@@ -1,48 +1,15 @@
 // store.js
 
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 
-const appuntamentiSlice = createSlice({
-  name: "appuntamenti",
-  initialState: [],
-  reducers: {
-    setAppuntamenti: (state, action) => {
-      return action.payload;
-    },
-    addAppuntamento: (state, action) => {
-      const newState = [...state, action.payload];
-      // ordina per data
-      const orderedState = newState.sort((a, b) => {
-        return new Date(a.data) - new Date(b.data);
-      });
-      return orderedState;
-    },
-    deleteAppuntamento: (state, action) => {
-      return state.filter((appuntamento) => appuntamento.id !== action.payload);
-    },
-    toggleCompletato: (state, action) => {
-      return state.map((appuntamento) => {
-        if (appuntamento.id === action.payload) {
-          return {
-            ...appuntamento,
-            completato: !appuntamento.completato,
-          };
-        }
-        return appuntamento;
-      });
-    },
-  },
-});
+import usersReducer from "./features/usersSlice";
+import appointmentsReducer from "./features/appointmentsSlice";
+import accountSlice from "./features/accountSlice";
 
-export const {
-  setAppuntamenti,
-  addAppuntamento,
-  deleteAppuntamento,
-  toggleCompletato,
-} = appuntamentiSlice.actions;
-
-export default configureStore({
+export const store = configureStore({
   reducer: {
-    appuntamenti: appuntamentiSlice.reducer,
+    appuntamenti: appointmentsReducer,
+    users: usersReducer,
+    account: accountSlice,
   },
 });
