@@ -42,7 +42,7 @@ const requests = {
       headers: getAuthHeaders(),
     };
   },
-  createUser: (newUser) => {
+  createNewUser: (newUser) => {
     return {
       url: `${API_ROOT_URL}/users`,
       method: "POST",
@@ -54,11 +54,20 @@ const requests = {
   updateUser: (id, updateData) => {
     return {
       url: `${API_ROOT_URL}/users/${id}`,
-      method: "PUT",
+      method: "PATCH",
       headers: getAuthHeaders(),
       data: updateData,
     };
   },
+
+  deleteUser: (id) => {
+    return {
+      url: `${API_ROOT_URL}/users/${id}`,
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    };
+  },
+
   // APPOINTMENTS
 
   getAllAppointments: () => {

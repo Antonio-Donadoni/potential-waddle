@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { X } from "lucide-react";
-import { createNewAppointment } from "../features/appointmentsSlice";
+import {
+  createNewAppointment,
+  updateAppointment,
+} from "../../../features/appointmentsSlice";
 
 const inputArray = [
   {
     name: "data",
     type: "datetime-local",
-    placeholder: "Data (es. 06/05/2023 10:00) ",
+    placeholder: "Data ",
   },
   {
     name: "titolo",
@@ -28,7 +31,12 @@ const inputArray = [
   },
 ];
 
-const NewAppointmentSection = ({ appuntamenti, onClose }) => {
+const NewAppointmentSection = ({
+  appuntamenti,
+  onClose,
+  isEditing,
+  appuntamentoToUpdate,
+}) => {
   const dispatch = useDispatch();
   const [nuovoAppuntamento, setNuovoAppuntamento] = useState({
     data: "",
@@ -36,6 +44,17 @@ const NewAppointmentSection = ({ appuntamenti, onClose }) => {
     descrizione: "",
     tipo: "",
   });
+
+  useEffect(() => {
+    if (isEditing && appuntamentoToUpdate) {
+      setNuovoAppuntamento({
+        data: new Date(appuntamentoToUpdate.data).toISOString().slice(0, 16),
+        titolo: appuntamentoToUpdate.titolo,
+        descrizione: appuntamentoToUpdate.descrizione,
+        tipo: appuntamentoToUpdate.tipo,
+      });
+    }
+  }, [isEditing, appuntamentoToUpdate]);
 
   const handleChangeNuovoAppuntamento = (e) => {
     const { name, value } = e.target;
@@ -45,19 +64,32 @@ const NewAppointmentSection = ({ appuntamenti, onClose }) => {
     }));
   };
 
-  const handleAddAppuntamento = () => {
-    const nuovoId = Math.max(...appuntamenti.map((a) => a.id), 0) + 1;
+  const handleAction = () => {
+    if (isEditing && appuntamentoToUpdate) {
+      // Logica per l'aggiornamento dell'appuntamento
+      const appuntamentoModificato = {
+        ...nuovoAppuntamento,
+      };
+      dispatch(
+        updateAppointment({
+          id: appuntamentoToUpdate._id,
+          updateData: appuntamentoModificato,
+        })
+      );
+      toast.success("Appuntamento aggiornato con successo!");
+    } else {
+      // Logica per la creazione di un nuovo appuntamento
+      const nuovoId = Math.max(...appuntamenti.map((a) => a.id), 0) + 1;
+      const nuovoAppuntamentoFormatted = {
+        id: nuovoId,
+        ...nuovoAppuntamento,
+        completato: false,
+      };
+      dispatch(createNewAppointment(nuovoAppuntamentoFormatted));
+      toast.success("Appuntamento aggiunto con successo!");
+    }
 
-    const nuovoAppuntamentoFormatted = {
-      id: nuovoId,
-      ...nuovoAppuntamento,
-      completato: false,
-    };
-
-    dispatch(createNewAppointment(nuovoAppuntamentoFormatted));
-    toast.success("Appuntamento aggiunto con successo!");
     onClose();
-
     setNuovoAppuntamento({
       data: "",
       titolo: "",
@@ -76,7 +108,9 @@ const NewAppointmentSection = ({ appuntamenti, onClose }) => {
           className="text-xl  text-white letter-spacing-2
         "
         >
-          Aggiungi un nuovo appuntamento
+          {!!isEditing
+            ? "Modifica appuntamento"
+            : "Aggiungi un nuovo appuntamento"}
         </h2>
       </div>
       <div className="grid grid-cols-2 gap-4 p-4">
@@ -122,7 +156,7 @@ const NewAppointmentSection = ({ appuntamenti, onClose }) => {
       "
       >
         <button
-          onClick={handleAddAppuntamento}
+          onClick={handleAction}
           className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={
             !nuovoAppuntamento.data ||
@@ -130,21 +164,35 @@ const NewAppointmentSection = ({ appuntamenti, onClose }) => {
             !nuovoAppuntamento.tipo
           }
         >
-          Aggiungi Appuntamento
+          {!!isEditing ? "Modifica Appuntamento" : "Aggiungi Appuntamento"}
         </button>
       </div>
     </div>
   );
 };
 
-const NewAppointmentPopup = ({ appuntamenti, onClose }) => {
+const NewAppointmentPopup = ({
+  appuntamenti,
+  onClose,
+  appuntamentoToUpdate,
+  isEditing,
+}) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-10 
     "
     >
-      <div className="bg-white rounded shadow-lg w-1/2 relative z-20 overflow-y-auto align-middle justify-center">
-        <NewAppointmentSection appuntamenti={appuntamenti} onClose={onClose} />
+      <div
+        className="bg-white rounded shadow-lg w-11/12
+       md:w-1/2
+       relative z-20 overflow-y-auto align-middle justify-center"
+      >
+        <NewAppointmentSection
+          appuntamenti={appuntamenti}
+          onClose={onClose}
+          appuntamentoToUpdate={appuntamentoToUpdate}
+          isEditing={isEditing}
+        />
         <X
           size={20}
           onClick={onClose}

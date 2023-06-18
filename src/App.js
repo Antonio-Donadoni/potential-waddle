@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AppointmentsPage from "./pages/AppointmentsPage";
+import AppointmentsPage from "./pages/appointments/AppointmentsPage";
 import "./App.css";
-import UserList from "./pages/UserList";
+import UserList from "./pages/users/UserList";
 import Login from "./pages/LoginPage";
 
 const App = () => {

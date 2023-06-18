@@ -1,28 +1,38 @@
 import React, { useState } from "react";
-import { Check, X, Trash2 } from "lucide-react";
+import { Check, X, Trash2, Edit } from "lucide-react";
 import moment from "moment";
 import "moment/locale/it"; // Importa la localizzazione italiana
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
-import DeletePopup from "./DeletePopup";
+import DeletePopup from "../../../components/DeletePopup";
 import {
   deleteAppointment,
   updateAppointment,
-} from "../features/appointmentsSlice";
+} from "../../../features/appointmentsSlice";
+import NewAppointmentSection from "./NewAppointmentSection";
 
-const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
-  moment.locale("it"); // Imposta la localizzazione italiana
+const AppointmentCard = ({
+  id,
+  data,
+  titolo,
+  descrizione,
+  tipo,
+  user,
+  appuntamento,
+}) => {
+  moment.locale("it");
   const dispatch = useDispatch();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const profile = useSelector((state) => state.account?.profile);
+  const isAdmin = profile?.ruolo === "admin";
 
   const completato = useSelector(
     (state) =>
       state.appuntamenti?.data.find((appuntamento) => appuntamento._id === id)
         ?.completato
   );
-
-  console.log("completato", completato);
 
   const handleDelete = () => {
     dispatch(deleteAppointment(id));
@@ -88,6 +98,8 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
     }
   };
 
+  console.log("appuntamento", appuntamento);
+
   return (
     <div
       className={`rounded-lg shadow-md p-4 mb-6 flex flex-col md:flex-row justify-between  relative  transition duration-300 ease-in-out hover:shadow-xl border-l-4 ${
@@ -100,6 +112,14 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
         <DeletePopup
           setShowDeletePopup={setShowDeletePopup}
           handleDelete={handleDelete}
+          text={"Sei sicuro di voler eliminare questo appuntamento?"}
+        />
+      )}
+      {!!showEditPopup && (
+        <NewAppointmentSection
+          onClose={() => setShowEditPopup(false)}
+          isEditing={true}
+          appuntamentoToUpdate={appuntamento}
         />
       )}
       <div
@@ -107,7 +127,7 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
        md:border-r-2 ${
          completato ? getColorClass().borderChecked : getColorClass().border
        } 
-        pr-2 md:pr-4 pb-4 md:pb-0 flex flex-row md:flex-col justify-between`}
+        pr-2 md:pr-4 pb-4 pt-2 md:pt-0 md:pb-0 flex flex-row md:flex-col justify-between`}
       >
         <div className="flex md:flex-row ">
           <h3 className={`text-3xl font-semibold mr-1 ${getColorClass().text}`}>
@@ -189,9 +209,33 @@ const AppointmentCard = ({ id, data, titolo, descrizione, tipo }) => {
               {descrizione}
             </p>
           </div>
+          <div>
+            <p
+              className={` text-sm ${
+                completato ? " text-gray-500" : "text-gray-800"
+              }`}
+            >
+              Assegnato a {}
+              <span className="font-semibold">
+                {user.nome + " " + user.cognome}
+              </span>
+            </p>
+          </div>
         </p>
       </div>
-      <div></div>
+
+      {
+        //  EDIT BUTTON
+      }
+      <div className="flex items-center absolute md:right-8 md:top-2 pb-2 right-6 top-1 ">
+        <div className="w-4 h-4 flex justify-center items-center cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out ">
+          <Edit
+            strokeWidth={3}
+            className="text-blue-800 cursor-pointer"
+            onClick={() => setShowEditPopup(true)}
+          />
+        </div>
+      </div>
       <div className="flex items-center absolute md:right-2 md:top-2  right-1 top-1 ">
         <div className="w-4 h-4 flex justify-center items-center cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out ">
           <Trash2

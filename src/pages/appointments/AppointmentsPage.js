@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
-import AppointmentCard from "../components/AppointmentCard";
+import AppointmentCard from "./components/AppointmentCard";
 import { useDispatch, useSelector } from "react-redux";
-import NewAppointmentSection from "../components/NewAppointmentSection";
+import NewAppointmentSection from "./components/NewAppointmentSection";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FilterIcon, FilterXIcon, PlusCircle, Search } from "lucide-react";
-import Navbar from "../components/Navbar";
-import CurrentWeekDays from "../components/CurrentWeekDays";
+import Navbar from "../../components/Navbar";
+import CurrentWeekDays from "./components/CurrentWeekDays";
 import moment from "moment";
 // import defaultAppuntamenti from "./defaultAppuntamenti";
-import FilterSection from "../components/FilterSection";
-import { getAllAppointments } from "../features/appointmentsSlice";
+import FilterSection from "./components/FilterSection";
+import { getAllAppointments } from "../../features/appointmentsSlice";
 import { useNavigate } from "react-router-dom";
 // import { getAllUsers } from "../features/usersReducer";
 
@@ -219,6 +219,8 @@ const AppointmentPage = () => {
                   descrizione={appuntamento.descrizione}
                   completato={appuntamento?.completato}
                   tipo={appuntamento.tipo}
+                  user={appuntamento.user}
+                  appuntamento={appuntamento}
                 />
               ))}
         </div>
