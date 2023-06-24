@@ -39,10 +39,15 @@ const Login = () => {
   }, [authToken]);
 
   return (
-    <div className="bg-gray-100 flex flex-col min-h-screen items-center justify-center">
-      <div className="w-full max-w-md p-6 bg-white">
-        <h1 className="text-2xl font-bold mb-4 text-blue-800">Accedi</h1>
-        <form onSubmit={handleSubmit}>
+    <div className=" bg-white md:bg-gray-100 flex flex-col min-h-screen items-center sm:justify-center">
+      <div className="w-full max-w-md  bg-white">
+        <h1
+          className="text-2xl font-bold mb-4 bg-blue-800 text-white p-4 text-center sm:rounded-t-lg
+        "
+        >
+          AppointmentAPP
+        </h1>
+        <form className="p-4" onSubmit={handleSubmit}>
           <div className="mb-4  flex items-center justify-between">
             <label htmlFor="email" className="text-gray-700 font-semibold">
               Email:
@@ -52,7 +57,8 @@ const Login = () => {
               id="email"
               value={email}
               onChange={handleEmailChange}
-              className="border border-gray-300 rounded py-2 px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="border border-gray-300 rounded py-2 px-4 mt-1 focus:outline-blue-500
+               focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div className="mb-6 flex items-center justify-between">
@@ -64,7 +70,7 @@ const Login = () => {
               id="password"
               value={password}
               onChange={handlePasswordChange}
-              className="border border-gray-300 rounded py-2 px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="border border-gray-300 rounded py-2 px-4 mt-1 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div className=" flex flex-col items-center justify-center">

@@ -119,13 +119,13 @@ const AppointmentPage = () => {
             </div>
             <div className="flex flex-row items-center justify-between md:justify-end w-full mt-2 md:mt-0">
               <div className="flex flex-row items-center ">
-                <Search className="mr-2" size={24} />
+                <Search className="mr-2" size={20} />
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Cerca"
-                  className="px-4 py-2 border border-gray-300 rounded-lg mr-2 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent"
+                  className="md:px-4 px-1 py-2 border border-gray-300 rounded-lg mr-2 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent"
                 />
               </div>
               <button
