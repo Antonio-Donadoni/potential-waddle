@@ -71,7 +71,6 @@ const DayCard = ({ day, selectedDay, setSelectedDay }) => {
 
   useEffect(() => {
     if (appuntamenti?.length > 0) {
-      console.log("MA QUA", appuntamenti);
       const dayHasAppuntamenti = appuntamenti?.some((appuntamento) =>
         moment(appuntamento.data, "YYYY/MM/DD HH:mm").isSame(
           day.fullDate,

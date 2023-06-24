@@ -41,9 +41,9 @@ const UserCard = ({ user }) => {
       )}
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">
-          <div className="flex-shrink-0 h-14 w-14">
+          <div className="flex-shrink-0 h-10 w-10 ml-4 md:ml-0 md:h-14 md:w-14">
             <img
-              className="h-14 w-14 rounded-full"
+              className="h-10 w-10 md:h-14 md:w-14 rounded-full"
               src={user.avatar || "https://unsplash.it/200/200"}
               alt=""
             />
@@ -59,12 +59,15 @@ const UserCard = ({ user }) => {
           </div>
         </div>
         <div className="flex flex-row items-center">
-          <div className="text-md text-blue-800 uppercase font-semibold pr-6">
+          <div
+            className="text-md bg-blue-100 text-blue-800 rounded-full px-3 py-1 
+           uppercase font-semibold tracking-wide text-xs md:text-sm cursor-pointer mr-6"
+          >
             {user.ruolo}
           </div>
         </div>
       </div>
-      <div className="flex items-center absolute md:right-8 md:top-2  right-6 top-1 ">
+      <div className="flex items-center absolute md:right-8 md:top-2 right-6 top-1 ">
         <div className="w-4 h-4 flex justify-center items-center cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out ">
           <Edit
             strokeWidth={3}

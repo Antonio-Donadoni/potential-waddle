@@ -20,13 +20,16 @@ const AppointmentCard = ({
   tipo,
   user,
   appuntamento,
+  isAdmin,
 }) => {
   moment.locale("it");
   const dispatch = useDispatch();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
-  const profile = useSelector((state) => state.account?.profile);
-  const isAdmin = profile?.ruolo === "admin";
+  const [showEditOwner, setShowEditOwner] = useState(false);
+  const [owner, setOwner] = useState(user._id);
+
+  const users = useSelector((state) => state.users.data);
 
   const completato = useSelector(
     (state) =>
@@ -48,6 +51,19 @@ const AppointmentCard = ({
         },
       })
     );
+    toast.success("Appuntamento aggiornato!");
+  };
+
+  const handleOwnerChange = () => {
+    dispatch(
+      updateAppointment({
+        id,
+        updateData: {
+          user: owner,
+        },
+      })
+    );
+    toast.success("Appuntamento aggiornato!");
   };
 
   // colori diversi per le tipologie
@@ -97,8 +113,6 @@ const AppointmentCard = ({
       }
     }
   };
-
-  console.log("appuntamento", appuntamento);
 
   return (
     <div
@@ -209,17 +223,71 @@ const AppointmentCard = ({
               {descrizione}
             </p>
           </div>
-          <div>
+          <div className="flex flex-row items-center ">
             <p
               className={` text-sm ${
                 completato ? " text-gray-500" : "text-gray-800"
               }`}
             >
               Assegnato a {}
-              <span className="font-semibold">
-                {user.nome + " " + user.cognome}
-              </span>
             </p>
+            {!!showEditOwner ? (
+              <>
+                <div className="flex flex-row items-center">
+                  <select
+                    className={`border-2 ${
+                      completato
+                        ? getColorClass().borderChecked
+                        : getColorClass().border
+                    } rounded-lg p-1 ml-2 text-sm bg-transparent focus:outline-none`}
+                    onChange={(e) => {
+                      setOwner(e.target.value);
+                    }}
+                    value={owner}
+                  >
+                    {users.map((u) => (
+                      <option value={u._id}>{u.nome + " " + u.cognome}</option>
+                    ))}
+                  </select>
+                  <Check
+                    strokeWidth={3}
+                    size={18}
+                    className="bg-green-800 text-white rounded-full p-1
+                     cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out"
+                    onClick={() => {
+                      setShowEditOwner(false);
+                      handleOwnerChange();
+                    }}
+                  />
+
+                  <X
+                    strokeWidth={3}
+                    size={18}
+                    className="bg-red-800 text-white rounded-full p-1
+                     cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out"
+                    onClick={() => setShowEditOwner(false)}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <span
+                  className={`font-semibold ml-1 text-sm ${
+                    completato ? " text-gray-500" : "text-gray-800"
+                  }`}
+                >
+                  {user.nome + " " + user.cognome}
+                </span>
+                {!!isAdmin && (
+                  <Edit
+                    strokeWidth={3}
+                    size={18}
+                    className="text-blue-800 cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out"
+                    onClick={() => setShowEditOwner(true)}
+                  />
+                )}
+              </>
+            )}
           </div>
         </p>
       </div>

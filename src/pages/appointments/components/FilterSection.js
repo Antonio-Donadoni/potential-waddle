@@ -13,7 +13,7 @@ const FilterSection = ({ filterOptions, setFilterOptions }) => {
     "
     >
       <div className="flex flex-row items-center justify-between mb-2 ">
-        <h2 className="text-lg font-semibold text-blue-800 ">
+        <h2 className="md:text-lg font-semibold text-blue-800 ">
           Filtra per tipo:
         </h2>
         <label className="flex items-center ml-2">
@@ -48,7 +48,7 @@ const FilterSection = ({ filterOptions, setFilterOptions }) => {
         </label>
       </div>
       <div className="flex flex-row items-center justify-between mb-2 ">
-        <h2 className="text-lg font-semibold text-blue-800">Stato:</h2>
+        <h2 className="md:text-lg font-semibold text-blue-800">Stato:</h2>
         <label className="flex items-center ml-2">
           <input
             type="checkbox"

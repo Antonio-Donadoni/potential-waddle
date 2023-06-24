@@ -29,8 +29,8 @@ const UserList = () => {
           {!!isNewUserSectionOpen && (
             <NewUserPopup onClose={() => setIsNewUserSectionOpen(false)} />
           )}
-          <div className="flex flex-row justify-between items-center mb-5">
-            <div className=" text-xl md:text-3xl font-blue-800 font-semibold text-gray-900">
+          <div className="flex flex-row justify-between items-center mb-5 ">
+            <div className=" text-xl md:text-3xl font-blue-800 font-semibold text-blue-800">
               Lista utenti
             </div>
             <div className="flex flex-row items-center">
@@ -42,12 +42,9 @@ const UserList = () => {
               >
                 Aggiungi utente
               </div>
-              {/* <div className="text-md text-blue-800 uppercase font-semibold pr-6">
-                Modifica utente
-              </div> */}
             </div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col lg:px-8">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               {users?.length > 0 ? (
                 users.map((user) => <UserCard user={user} />)

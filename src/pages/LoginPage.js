@@ -30,9 +30,6 @@ const Login = () => {
         password,
       })
     );
-    // Effettua l'autenticazione qui utilizzando i dati email e password
-    console.log("Email:", email);
-    console.log("Password:", password);
   };
 
   useEffect(() => {

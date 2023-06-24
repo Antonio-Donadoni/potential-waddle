@@ -12,6 +12,7 @@ import moment from "moment";
 import FilterSection from "./components/FilterSection";
 import { getAllAppointments } from "../../features/appointmentsSlice";
 import { useNavigate } from "react-router-dom";
+import { getAllUsers } from "../../features/usersSlice";
 // import { getAllUsers } from "../features/usersReducer";
 
 const AppointmentPage = () => {
@@ -19,7 +20,8 @@ const AppointmentPage = () => {
   const navigate = useNavigate();
   const appuntamenti = useSelector((state) => state.appuntamenti.data);
   const authToken = localStorage.getItem("authToken");
-  console.log("appuntamenti", appuntamenti);
+  const profile = useSelector((state) => state.account?.profile);
+  const isAdmin = profile?.ruolo === "admin";
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isNewAppointmentSectionOpen, setIsNewAppointmentSectionOpen] =
@@ -45,8 +47,13 @@ const AppointmentPage = () => {
     } else {
       navigate("/login");
     }
-    // dispatch(getAllUsers());
   }, [authToken, dispatch]);
+
+  useEffect(() => {
+    if (!!isAdmin) {
+      dispatch(getAllUsers());
+    }
+  }, [isAdmin]);
 
   useEffect(() => {
     if (appuntamenti.length > 0) {
@@ -153,7 +160,8 @@ const AppointmentPage = () => {
               className="text-gray-600 text-sm 
           "
             >
-              Hai {appuntamentiOggi} appuntamenti fissati per questo giornata
+              Hai <b className="text-blue-800 text-lg">{appuntamentiOggi}</b>{" "}
+              appuntamenti fissati per questo giornata
             </p>
           )}
 
@@ -221,6 +229,7 @@ const AppointmentPage = () => {
                   tipo={appuntamento.tipo}
                   user={appuntamento.user}
                   appuntamento={appuntamento}
+                  isAdmin={isAdmin}
                 />
               ))}
         </div>

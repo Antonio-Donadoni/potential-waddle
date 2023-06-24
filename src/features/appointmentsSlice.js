@@ -77,7 +77,6 @@ export const getAllAppointments = createAsyncThunk(
   "appointmentsSlice/getAllAppointments",
   async () => {
     try {
-      console.log("getAllAppointments");
       const { url, method, headers } = api.getAllAppointments();
       const appointments = await axios({
         url,
@@ -114,7 +113,6 @@ export const updateAppointment = createAsyncThunk(
   "appointmentsSlice/updateAppointment",
   async ({ id, updateData }) => {
     try {
-      console.log("updateAppointment" + id + updateData);
       const { url, method, headers, data } = api.updateAppointment(
         id,
         updateData
