@@ -132,7 +132,10 @@ const NewUserSection = ({ appuntamenti, onClose, existingUser }) => {
           {!!existingUser ? "Modifica utente" : "Crea un nuovo utente"}
         </h2>
       </div>
-      <div className="grid grid-cols-2 gap-4 p-4">
+      <div
+        className="grid grid-cols-1
+       md:grid-cols-2 gap-4 p-4"
+      >
         {inputArray.map((input) => (
           <div key={input.name}>
             <label
@@ -201,7 +204,10 @@ const NewUserPopup = ({ appuntamenti, onClose, existingUser }) => {
       className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-10 
     "
     >
-      <div className="bg-white rounded shadow-lg w-11/12 md:w-1/2 relative z-20 overflow-y-auto align-middle justify-center">
+      <div
+        className="bg-white rounded shadow-lg w-full h-full md:w-1/2 md:h-auto
+      relative z-20 overflow-y-auto align-middle justify-center"
+      >
         <NewUserSection
           appuntamenti={appuntamenti}
           onClose={onClose}

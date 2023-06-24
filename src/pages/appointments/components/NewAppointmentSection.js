@@ -113,7 +113,10 @@ const NewAppointmentSection = ({
             : "Aggiungi un nuovo appuntamento"}
         </h2>
       </div>
-      <div className="grid grid-cols-2 gap-4 p-4">
+      <div
+        className="grid grid-cols-1
+       md:grid-cols-2 gap-4 p-4"
+      >
         {inputArray.map((input) => (
           <div key={input.name}>
             <label
@@ -183,7 +186,7 @@ const NewAppointmentPopup = ({
     "
     >
       <div
-        className="bg-white rounded shadow-lg w-11/12
+        className="bg-white rounded shadow-lg w-full h-full md:h-auto
        md:w-1/2
        relative z-20 overflow-y-auto align-middle justify-center"
       >
