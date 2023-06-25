@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/accountSlice";
 import { useNavigate } from "react-router-dom";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const authToken = localStorage.getItem("authToken");
@@ -19,6 +20,9 @@ const Login = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = (e) => {
@@ -65,13 +69,25 @@ const Login = () => {
             <label htmlFor="password" className="text-gray-700 font-semibold">
               Password:
             </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className="border border-gray-300 rounded py-2 px-4 mt-1 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={handlePasswordChange}
+                className="border border-gray-300 rounded py-2 px-4 mt-1 focus:outline-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <span
+                className="absolute top-1/2 right-2 transform -translate-y-1/3 cursor-pointer"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5 text-blue-800" />
+                ) : (
+                  <Eye className="h-5 w-5 text-blue-800" />
+                )}
+              </span>
+            </div>
           </div>
           <div className=" flex flex-col items-center justify-center">
             {!!error && (

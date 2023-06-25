@@ -131,7 +131,8 @@ const NewAppointmentSection = ({
                 name={input.name}
                 value={nuovoAppuntamento[input.name]}
                 onChange={handleChangeNuovoAppuntamento}
-                className="w-full p-2 mb-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="w-full p-2 mb-2 rounded border border-gray-300
+                 focus:outline-blue-600 md:focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               >
                 <option value="">Seleziona una tipologia</option>
                 {input.options.map((option) => (
@@ -148,7 +149,7 @@ const NewAppointmentSection = ({
                 value={nuovoAppuntamento[input.name]}
                 onChange={handleChangeNuovoAppuntamento}
                 placeholder={input.placeholder}
-                className="w-full p-2 mb-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="w-full p-2 mb-2 rounded border border-gray-300 focus:outline-blue-600 md:focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               />
             )}
           </div>

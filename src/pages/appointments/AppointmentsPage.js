@@ -100,7 +100,7 @@ const AppointmentPage = () => {
               filterSectionOpen ? "border-b-0" : "border-b-2  pb-2"
             } border-blue-800`}
           >
-            <div className="flex flex-row md:items-center w-full">
+            <div className="flex flex-row justify-between md:items-center w-full">
               <h1
                 className="text-xl md:text-3xl font-bold text-blue-800  
           "
@@ -114,7 +114,18 @@ const AppointmentPage = () => {
                 }
               >
                 <PlusCircle className="mr-2" size={24} />
-                {"Nuovo appuntamento"}
+                <span
+                  className="hidden md:inline
+                "
+                >
+                  {"Nuovo appuntamento"}
+                </span>
+                <span
+                  className="inline md:hidden
+                "
+                >
+                  {"Nuovo"}
+                </span>
               </button>
             </div>
             <div className="flex flex-row items-center justify-between md:justify-end w-full mt-2 md:mt-0">
@@ -155,24 +166,25 @@ const AppointmentPage = () => {
               setSelectedDay={setSelectedDay}
             />
           )}
-          {appuntamentiOggi > 0 && (
-            <p
-              className="text-gray-600 text-sm 
+          {!searchTerm && appuntamentiOggi > 0 && (
+            <>
+              <p
+                className="text-gray-600 text-sm 
           "
-            >
-              Hai <b className="text-blue-800 text-lg">{appuntamentiOggi}</b>{" "}
-              appuntamenti fissati per questo giornata
-            </p>
+              >
+                Hai <b className="text-blue-800 text-lg">{appuntamentiOggi}</b>{" "}
+                appuntamenti fissati per questo giornata
+              </p>
+
+              <p
+                className="text-gray-600 text-sm mb-4
+          "
+              >
+                ({appuntamentiOggiCompletati} completati{" / "}
+                {appuntamentiOggiNonCompletati} da completare)
+              </p>
+            </>
           )}
-
-          <p
-            className="text-gray-600 text-sm mb-4
-          "
-          >
-            ({appuntamentiOggiCompletati} completati{" / "}
-            {appuntamentiOggiNonCompletati} da completare)
-          </p>
-
           {appuntamenti?.length > 0 &&
             appuntamenti
               .filter((appuntamento) => {

@@ -150,7 +150,7 @@ const NewUserSection = ({ appuntamenti, onClose, existingUser }) => {
                 name={input.name}
                 value={nuovoUtente[input.name]}
                 onChange={handleChangeNuovoUtente}
-                className="w-full p-2 mb-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="w-full p-2 mb-2 rounded border border-gray-300 focus:outline-blue-600 md:focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               >
                 <option value="">Seleziona una tipologia</option>
                 {input.options.map((option) => (
@@ -167,7 +167,7 @@ const NewUserSection = ({ appuntamenti, onClose, existingUser }) => {
                 value={nuovoUtente[input.name]}
                 onChange={handleChangeNuovoUtente}
                 placeholder={input.placeholder}
-                className="w-full p-2 mb-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="w-full p-2 mb-2 rounded border border-gray-300 focus:outline-blue-600 md:focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               />
             )}
           </div>

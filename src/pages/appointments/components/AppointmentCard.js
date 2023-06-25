@@ -144,11 +144,15 @@ const AppointmentCard = ({
         pr-2 md:pr-4 pb-4 pt-2 md:pt-0 md:pb-0 flex flex-row md:flex-col justify-between`}
       >
         <div className="flex md:flex-row ">
-          <h3 className={`text-3xl font-semibold mr-1 ${getColorClass().text}`}>
+          <h3
+            className={`mt-1 text-4xl md:text-3xl font-semibold mr-1 ${
+              getColorClass().text
+            }`}
+          >
             {moment(data).format("DD")}
           </h3>
           <div
-            className="flex flex-col justify-center mt-1
+            className="flex flex-col justify-center md:mt-1
           
           "
           >
@@ -179,7 +183,7 @@ const AppointmentCard = ({
             className={`font-semibold leading-none uppercase p-1 rounded-lg
            ${getColorClass().bg} text-sm ${
               getColorClass().text
-            } text-center md:mt-2
+            } text-center mt-1 md:mt-2
         `}
           >
             {tipo}
@@ -223,72 +227,76 @@ const AppointmentCard = ({
               {descrizione}
             </p>
           </div>
-          <div className="flex flex-row items-center ">
-            <p
-              className={` text-sm ${
-                completato ? " text-gray-500" : "text-gray-800"
-              }`}
-            >
-              Assegnato a {}
-            </p>
-            {!!showEditOwner ? (
-              <>
-                <div className="flex flex-row items-center">
-                  <select
-                    className={`border-2 ${
-                      completato
-                        ? getColorClass().borderChecked
-                        : getColorClass().border
-                    } rounded-lg p-1 ml-2 text-sm bg-transparent focus:outline-none`}
-                    onChange={(e) => {
-                      setOwner(e.target.value);
-                    }}
-                    value={owner}
-                  >
-                    {users.map((u) => (
-                      <option value={u._id}>{u.nome + " " + u.cognome}</option>
-                    ))}
-                  </select>
-                  <Check
-                    strokeWidth={3}
-                    size={18}
-                    className="bg-green-800 text-white rounded-full p-1
+          {!!isAdmin && (
+            <div className="flex flex-row items-center ">
+              <p
+                className={` text-sm ${
+                  completato ? " text-gray-500" : "text-gray-800"
+                }`}
+              >
+                Assegnato a {}
+              </p>
+              {!!showEditOwner ? (
+                <>
+                  <div className="flex flex-row items-center">
+                    <select
+                      className={`border-2 ${
+                        completato
+                          ? getColorClass().borderChecked
+                          : getColorClass().border
+                      } rounded-lg p-1 ml-2 text-sm bg-transparent focus:outline-none`}
+                      onChange={(e) => {
+                        setOwner(e.target.value);
+                      }}
+                      value={owner}
+                    >
+                      {users.map((u) => (
+                        <option value={u._id}>
+                          {u.nome + " " + u.cognome}
+                        </option>
+                      ))}
+                    </select>
+                    <Check
+                      strokeWidth={3}
+                      size={18}
+                      className="bg-green-800 text-white rounded-full p-1
                      cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out"
-                    onClick={() => {
-                      setShowEditOwner(false);
-                      handleOwnerChange();
-                    }}
-                  />
+                      onClick={() => {
+                        setShowEditOwner(false);
+                        handleOwnerChange();
+                      }}
+                    />
 
-                  <X
-                    strokeWidth={3}
-                    size={18}
-                    className="bg-red-800 text-white rounded-full p-1
+                    <X
+                      strokeWidth={3}
+                      size={18}
+                      className="bg-red-800 text-white rounded-full p-1
                      cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out"
-                    onClick={() => setShowEditOwner(false)}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <span
-                  className={`font-semibold ml-1 text-sm ${
-                    completato ? " text-gray-500" : "text-gray-800"
-                  }`}
-                >
-                  {user.nome + " " + user.cognome}
-                </span>
-                {!!isAdmin && (
-                  <Edit
-                    strokeWidth={3}
-                    size={18}
-                    className="text-blue-800 cursor-pointer ml-2 hover:scale-110 transform transition duration-300 ease-in-out"
-                    onClick={() => setShowEditOwner(true)}
-                  />
-                )}
-              </>
-            )}
-          </div>
+                      onClick={() => setShowEditOwner(false)}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <span
+                    className={`font-semibold ml-1 text-sm ${
+                      completato ? " text-gray-500" : "text-gray-800"
+                    }`}
+                  >
+                    {user.nome + " " + user.cognome}
+                  </span>
+                  {!!isAdmin && (
+                    <Edit
+                      strokeWidth={3}
+                      size={18}
+                      className="text-blue-800 cursor-pointer ml-2  hover:scale-110 transform transition duration-300 ease-in-out"
+                      onClick={() => setShowEditOwner(true)}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </p>
       </div>
 
