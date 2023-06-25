@@ -100,7 +100,10 @@ const AppointmentPage = () => {
               filterSectionOpen ? "border-b-0" : "border-b-2  pb-2"
             } border-blue-800`}
           >
-            <div className="flex flex-row justify-between md:items-center w-full">
+            <div
+              className="flex flex-row justify-between md:justify-start
+             md:items-center w-full"
+            >
               <h1
                 className="text-xl md:text-3xl font-bold text-blue-800  
           "
